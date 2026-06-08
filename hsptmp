@@ -1,0 +1,20 @@
+#include "shell32.as"
+
+; --- 管理者権限チェック ---
+sdim verb, 256
+verb = "runas"
+if (varptr(IsUserAnAdmin) == 0) {
+    ; 古いOS対策（通常はshell32に含まれる）
+} else {
+    if (IsUserAnAdmin() == 0) {
+        ; 管理者でない場合、自分自身を管理者として実行し直す
+        exec strsize, verb, hwnd
+        end
+    }
+}
+
+; ここからメイン処理
+screen 0, 800, 600
+title "管理者モード：詳細エクスプローラー"
+
+; (以下、前述のパイプ通信コードに続く)
